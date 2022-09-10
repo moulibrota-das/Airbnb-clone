@@ -12,8 +12,6 @@ const Footer = () => {
       <div className="space-y-4  text-gray-800 text-sm font-medium">
         <h5 className="font-bold">COMMUNITY</h5>
         <p>Diversity & Belonging</p>
-        <p>This is not a real site</p>
-        <p>It&apos;s a pretty awesome clone</p>
         <p>Guest Referrals</p>
         <p>Airbnb.org</p>
       </div>
@@ -21,7 +19,6 @@ const Footer = () => {
         <h5 className="font-bold">HOST</h5>
         <p>Host your home</p>
         <p>Site hosted on vercel</p>
-        <p>Created by Rohit Ingole</p>
         <p>Completely Responsive</p>
         <p>Resource Center</p>
       </div>
