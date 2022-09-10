@@ -28,8 +28,8 @@ function Filter() {
   //   });
 
   return (
-    <div className="flex px-20 pt-10 justify-between">
-      <div className=" flex overflow-hidden justify-between w-5/6 items-center">
+    <div className="hidden md:flex  md:px-20 px-5 md:pt-10 pt-5 justify-between">
+      <div className=" flex overflow-hidden justify-between md:w-11/12 w-full items-center">
         {filterData &&
           filterData.map((items) => {
             return (
@@ -54,7 +54,9 @@ function Filter() {
             );
           })}
       </div>
-      <button className="items-center justify-end">Filter</button>
+      <button className=" items-center  cursor-pointer bg-white border-2 p-3">
+        Filter
+      </button>
     </div>
   );
 }
