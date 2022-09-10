@@ -10,31 +10,13 @@ import styles from "../styles/Home.module.css";
 import Hotels from "../components/Hotels";
 import Filter from "../components/Filter";
 
-export default function Home() {
-  const [propertyData, setPropertyData] = useState();
+export default function Home({ result }) {
+  // const [propertyData, setPropertyData] = useState();
+  // setPropertyData(result);
 
-  const getPropertyResults = async () => {
-    console.log("get property start");
-    // console.log(locationData);
-    const locationUrl = `https://hotels4.p.rapidapi.com/properties/list?destinationId=1757510&pageNumber=1&pageSize=25&checkIn=2022-09-11&checkOut=2022-09-14&adults1=1&sortOrder=PRICE&locale=en_US&currency=USD`;
-
-    const options = {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": "f8da552677msh3cc69df4e6e27e2p13da2ajsnaafab4748640",
-        "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-      },
-    };
-
-    const api = await fetch(locationUrl, options);
-    const data = await api.json();
-    setPropertyData(data.data.body.searchResults.results);
-    console.log("get property done");
-  };
-
-  useEffect(() => {
-    getPropertyResults();
-  }, []);
+  // useEffect(() => {
+  //   getPropertyResults();
+  // }, []);
 
   return (
     <div className="">
@@ -46,7 +28,30 @@ export default function Home() {
       <Header />
 
       <Filter />
-      <Hotels data={propertyData} />
+      <Hotels data={result} />
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  // console.log(locationData);
+  const locationUrl = `https://hotels4.p.rapidapi.com/properties/list?destinationId=1757510&pageNumber=1&pageSize=25&checkIn=2022-09-11&checkOut=2022-09-14&adults1=1&sortOrder=PRICE&locale=en_US&currency=USD`;
+
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": "f8da552677msh3cc69df4e6e27e2p13da2ajsnaafab4748640",
+      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+    },
+  };
+
+  const api = await fetch(locationUrl, options);
+  const data = await api.json();
+  const result = data.data.body.searchResults.results;
+
+  return {
+    props: {
+      result,
+    },
+  };
 }

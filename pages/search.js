@@ -5,15 +5,11 @@ import Header from "../components/Header";
 import { format } from "date-fns";
 import Hotels from "../components/Hotels";
 
-function Search() {
+function Search({ finalPropertyData }) {
   const router = useRouter();
   const [locationData, setLocationData] = useState();
   const [propertyData, setPropertyData] = useState();
   const { location, startDate, endDate } = router.query;
-
-  //   const formatStartDate = startDate.split("T")[0];
-  //   const formatEndDate = endDate.split("T")[0];
-  //   console.log(formatStartDate);
 
   const getLocationResults = async () => {
     const locationUrl = `https://hotels4.p.rapidapi.com/locations/v2/search?query=${location}&locale=en_US&currency=USD`;
@@ -37,8 +33,6 @@ function Search() {
 
     console.log("get location done");
   };
-
-  //   console.log(locationData);
 
   const getPropertyResults = async (id) => {
     console.log("get property start");
@@ -69,7 +63,7 @@ function Search() {
   return (
     <div>
       <Header />
-      <Hotels data={propertyData} />
+      <Hotels data={finalPropertyData} />
       <Footer />
     </div>
   );
