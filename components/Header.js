@@ -37,8 +37,8 @@ function Header() {
       pathname: "/search",
       query: {
         location: searchInput,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate: startDate.toISOString().substring(0, 10),
+        endDate: endDate.toISOString().substring(0, 10),
       },
     });
     Cancel();

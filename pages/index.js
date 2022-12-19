@@ -9,6 +9,7 @@ import InfoCard from "../components/InfoCard";
 import styles from "../styles/Home.module.css";
 import Hotels from "../components/Hotels";
 import Filter from "../components/Filter";
+import axios from "axios";
 
 export default function Home({ result }) {
   // const [propertyData, setPropertyData] = useState();
@@ -28,26 +29,27 @@ export default function Home({ result }) {
       <Header />
 
       <Filter />
-      <Hotels data={result} />
+      <Hotels result={result} />
     </div>
   );
 }
 
 export async function getServerSideProps() {
-  // console.log(locationData);
-  const locationUrl = `https://hotels4.p.rapidapi.com/properties/list?destinationId=1757510&pageNumber=1&pageSize=25&checkIn=2022-09-11&checkOut=2022-09-14&adults1=1&sortOrder=PRICE&locale=en_US&currency=USD`;
-
   const options = {
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "f8da552677msh3cc69df4e6e27e2p13da2ajsnaafab4748640",
-      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+      "X-RapidAPI-Host": "airbnb13.p.rapidapi.com",
     },
   };
 
-  const api = await fetch(locationUrl, options);
-  const data = await api.json();
-  const result = data.data.body.searchResults.results;
+  const api = await fetch(
+    "https://airbnb13.p.rapidapi.com/search-location?location=Europe&checkin=2022-12-22&checkout=2022-12-24&adults=1&children=0&infants=0&page=1",
+    options
+  );
+  const response = await api.json();
+  console.log("index js res", response);
+  const result = response.results;
 
   return {
     props: {

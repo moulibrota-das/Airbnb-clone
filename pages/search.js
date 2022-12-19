@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { format } from "date-fns";
 import Hotels from "../components/Hotels";
+import axios from "axios";
 
 function Search({ finalPropertyData }) {
   const router = useRouter();
@@ -11,59 +12,49 @@ function Search({ finalPropertyData }) {
   const [propertyData, setPropertyData] = useState();
   const { location, startDate, endDate } = router.query;
 
+  console.log("startdate", Date.now());
+  console.log("enddate", endDate);
+
   const getLocationResults = async () => {
-    const locationUrl = `https://hotels4.p.rapidapi.com/locations/v2/search?query=${location}&locale=en_US&currency=USD`;
-
     const options = {
       method: "GET",
+      url: "https://airbnb13.p.rapidapi.com/search-location",
+      params: {
+        location: `${location}`,
+        checkin: `${startDate}`,
+        checkout: `${endDate}`,
+        adults: "1",
+        children: "0",
+        infants: "0",
+        page: "1",
+      },
       headers: {
         "X-RapidAPI-Key": "f8da552677msh3cc69df4e6e27e2p13da2ajsnaafab4748640",
-        "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+        "X-RapidAPI-Host": "airbnb13.p.rapidapi.com",
       },
     };
 
-    const api = await fetch(locationUrl, options);
-    const data = await api.json();
-    try {
-      const finalData = await data.suggestions[0].entities[0].destinationId;
-      setLocationData(finalData);
-    } catch (error) {
-      console.log(error);
-    }
-
-    console.log("get location done");
-  };
-
-  const getPropertyResults = async (id) => {
-    console.log("get property start");
-    console.log(locationData);
-    const locationUrl = `https://hotels4.p.rapidapi.com/properties/list?destinationId=${locationData}&pageNumber=1&pageSize=25&checkIn=2022-09-11&checkOut=2022-09-14&adults1=1&sortOrder=PRICE&locale=en_US&currency=USD`;
-
-    const options = {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": "f8da552677msh3cc69df4e6e27e2p13da2ajsnaafab4748640",
-        "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-      },
-    };
-
-    const api = await fetch(locationUrl, options);
-    const data = await api.json();
-    await setPropertyData(data.data.body.searchResults.results);
-    await console.log("get property done");
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log("axios res", response);
+        setLocationData(response.data.results);
+        console.log("locaton data", locationData);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
     getLocationResults();
+    console.log("location result", locationData);
   }, [location]);
 
-  useEffect(() => {
-    locationData && getPropertyResults(locationData);
-  }, [locationData]);
   return (
     <div>
       <Header />
-      <Hotels data={finalPropertyData} />
+      <Hotels result={locationData} />
       <Footer />
     </div>
   );

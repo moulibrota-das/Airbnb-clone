@@ -24,11 +24,13 @@ const InfoCard = ({
       </div>
 
       <div className="py-2">
-        <p className=" font-semibold ">{title}</p>
+        <p className=" font-semibold ">
+          {title.length > 20 ? title.substring(0, 20) : title}
+        </p>
         <p className=" text-sm ">{location}</p>
         <p className=" text-sm ">9-15 Jul</p>
         <div className="flex pt-2 ">
-          <p className="font-bold">{price}</p>
+          <p className="font-bold">${price}</p>
           <p className="pl-1"> night</p>
         </div>
       </div>
